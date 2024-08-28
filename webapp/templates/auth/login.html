@@ -1,13 +1,19 @@
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
-{% block body %}
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <h1 class="text-center">Login</h1>
+<!DOCTYPE html>
+<html lan="en">
+<head>
+    <meta charset="UTf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedifyCare</title>
+    <link rel="stylesheet" href="../../static/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="wrapper">
             <form method="POST" action="{{ url_for('.login') }}">
                 {{ form.hidden_tag() }}
-                <div class="form-group">
+                <h1>Login</h1>
+                <div class="input-box">
                     {{ form.username.label }}
                     {% if form.username.errors %}
                         {% for e in form.username.errors %}
@@ -16,7 +22,7 @@
                     {% endif %}
                     {{ form.username(class_='form-control') }}
                 </div>
-                <div class="form-group">
+                <div class="input-box">
                     {{ form.password.label }}
                     {% if form.password.errors %}
                         {% for e in form.password.errors %}
@@ -25,7 +31,7 @@
                     {% endif %}
                     {{ form.password(class_='form-control') }}
                 </div>
-                <div class="form-group">
+                <div class="remember-forgot">
                     {{ form.remember.label }}
                     {% if form.remember.errors %}
                         {% for e in form.remember.errors %}
@@ -34,10 +40,11 @@
                     {% endif %}
                     {{ form.remember(class_='form-control') }}
                 </div>
-                <input class="btn btn-primary" type="submit" value="Login">
+                <input class="btn" type="submit" value="Login">
+                <div class="register-link">
+                    <p>Don't have an account? <a href="{{ url_for('auth.register') }}"> Register</a></p>
+                </div>
             </form>
-            <hr>
-        </div>
-        <div class="col-md-4"></div>
     </div>
-{% endblock %}
+</body>    
+</html>

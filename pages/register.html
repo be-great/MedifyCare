@@ -29,7 +29,7 @@
                 <i class='bx bxs-lock-alt'></i>
             </div>
             <p id="message"></p>
-            <input type="button" class="button" onclick="checkPassword()" value="Submit"/>
+            <input type="button" class="button" onclick="checkPassword()" value="Submit">
         </form>
     </div>
     <script>
@@ -42,7 +42,8 @@
                 if(password === cnfrmPassword) {
                     message.textContent = "Passwords match";
                     message.style.backgroundColor = "#3ae374";
-                } else {
+                }
+                else {
                     message.textContent = "Passwords don't match";
                     message.style.backgroundColor = "#ff4d4d";
                 }

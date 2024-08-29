@@ -1,6 +1,3 @@
-from flask import Blueprint
-
-chat_blueprint = Blueprint('chat', __name__, url_prefix='/chat')
-
-from . import routes, sockets
-
+def chat_create_module(app,**kwargs):
+    from .view import chat_blueprint
+    app.register_blueprint(chat_blueprint)

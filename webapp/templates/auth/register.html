@@ -14,7 +14,7 @@
                 {{ form.hidden_tag() }}
                 <h1>Register</h1>
                 <div class="input-box">
-                    {{ form.username.label }}
+                    {{ form.username.label }} <span style="color: red; font-weight: bold;">*</span>
                     {% if form.username.errors %}
                         {% for e in form.username.errors %}
                             <p class="help-block">{{ e }}</p>
@@ -23,7 +23,7 @@
                     {{ form.username(class_='form-control') }}
                 </div>
                 <div class="input-box">
-                    {{ form.password.label }}
+                    {{ form.password.label }} <span style="color: red; font-weight: bold;">*</span>
                     {% if form.password.errors %}
                         {% for e in form.password.errors %}
                             <p class="help-block">{{ e }}</p>
@@ -32,7 +32,7 @@
                     {{ form.password(class_='form-control') }}
                 </div>
                 <div class="input-box">
-                    {{ form.confirm.label }}
+                    {{ form.confirm.label }} <span style="color: red; font-weight: bold;">*</span>
                     {% if form.confirm.errors %}
                         {% for e in form.confirm.errors %}
                             <p class="help-block">{{ e }}</p>
@@ -40,6 +40,21 @@
                     {% endif %}
                     {{ form.confirm(class_='form-control') }}
                 </div>
+                <br>
+                <div class="input-box">
+                    {{ form.role.label }} <span style="color: red; font-weight: bold;">*</span><br>
+                    {{ form.role(id='role') }}<br>
+                </div>
+                <br>
+                <div class="input-box">
+                    {{ form.speciality.label }} if you are a doctor<br>
+                    {{ form.speciality(size=32) }}<br>
+                    {% for error in form.speciality.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <br>
+                <br>
                 <input class="button" type="submit" value="Register">
             </form>
     </div>

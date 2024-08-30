@@ -7,11 +7,6 @@ from flask_login import login_user, logout_user
 from .models import db, User, Role
 from .forms import LoginForm, RegisterForm
 
-def create_default_role():
-    if not Role.query.filter_by(name="default").first():
-        default_role = Role(name="default")
-        db.session.add(default_role)
-        db.session.commit()
 
 auth_blueprint = Blueprint(
     'auth',
@@ -44,10 +39,11 @@ def logout():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        create_default_role()
         new_user = User(form.username.data)
         new_user.set_password(form.password.data)
-
+        selected_role = Role.query.get(form.role.data)
+        new_user.roles.append(selected_role)
+        new_user.speciality = form.speciality.data
         db.session.add(new_user)
         db.session.commit()
 

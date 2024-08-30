@@ -12,6 +12,7 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(255), nullable=False, index=True, unique=True)
     password = db.Column(db.String(255))
+    speciality = db.Column(db.String(255))
     roles = db.relationship(
         'Role',
         secondary=roles,
@@ -20,8 +21,6 @@ class User(db.Model):
 
     def __init__(self, username=""):
         # you first you make manual defalut role then
-        default = Role.query.filter_by(name="default").one()
-        self.roles.append(default)
         self.username = username
 
     def __repr__(self):

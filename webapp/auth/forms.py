@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm as Form
 from flask_wtf import RecaptchaField
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
-from .models import User
+from .models import User, Role
 
 
 class LoginForm(Form):
@@ -38,12 +38,23 @@ class RegisterForm(Form):
         DataRequired(),
         EqualTo('password', message="Passwords must match")
     ])
+    role = SelectField('Role', choices=[], validators=[DataRequired()])
+    speciality = StringField('Speciality')
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        # Fetch roles from the database and set choices
+        self.role.choices = [(role.id, role.name.capitalize()) for role in Role.query.all()]
 
     def validate(self, extra_validators=None):
         # Perform standard validation
         if not super(RegisterForm, self).validate():
             return False
-
+        print("---------------------------------------")
+        print(self.speciality.data)
+        print("---------------------------------------")
+        if self.role.data == '2' and self.speciality.data == "":
+            self.speciality.errors.append('Speciality is required for doctors')
+            return False 
         # Custom validation: Check if the username already exists
         user = User.query.filter_by(username=self.username.data).first()
         if user:

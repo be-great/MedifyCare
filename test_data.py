@@ -17,11 +17,10 @@ app.app_context().push()
 
 
 fake_users = [
-    {'username': 'Esra', 'role': 'admin'},
     {'username': 'Woko', 'role': 'doctor', 'speciality': 'psychological'},
-    {'username': 'Ahed', 'role': 'patient'}
+    {'username': 'Esra', 'role': 'patient'}
 ]
-fake_roles = ['admin', 'doctor', 'patient']
+fake_roles = ['doctor', 'patient']
 
 
 def generate_roles():

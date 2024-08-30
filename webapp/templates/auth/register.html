@@ -54,6 +54,14 @@
                     {% endfor %}
                 </div>
                 <br>
+                <div class="input-box">
+                    {{ form.bio.label }} if you are a doctor<br>
+                    {{ form.bio(size=32) }}<br>
+                    {% for error in form.bio.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <br>
                 <br>
                 <input class="button" type="submit" value="Register">
             </form>

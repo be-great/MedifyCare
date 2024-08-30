@@ -44,6 +44,7 @@ def register():
         selected_role = Role.query.get(form.role.data)
         new_user.roles.append(selected_role)
         new_user.speciality = form.speciality.data
+        new_user.bio = form.bio.data
         db.session.add(new_user)
         db.session.commit()
 

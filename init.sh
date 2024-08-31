@@ -1,3 +1,4 @@
+pip install virtualenv
 if [ ! -d "venv" ]; then
     echo --------------------
     echo Creating virtualenv

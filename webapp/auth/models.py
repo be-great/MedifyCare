@@ -12,7 +12,7 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(255), nullable=False, index=True, unique=True)
     password = db.Column(db.String(255))
-    speciality = db.Column(db.String(255))
+    specialty = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     roles = db.relationship(
         'Role',

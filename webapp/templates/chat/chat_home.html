@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consult a Doctor</title>
+    <!-- Link to the specific CSS file for this page -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='find_doc.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Consult a Doctor</h1>
+        <p>Get expert medical advice from our team of specialists</p>
+    </header>
+
+    <!-- Doctor Selection Section -->
+    <section class="doctor-selection">
+        <h2>Choose a Doctor</h2>
+        <div class="filter-search">
+            <input type="text" placeholder="Search for a doctor...">
+            <select>
+                <option value="">Filter by Speciality</option>
+                {% for doctor in doctors %}
+                    <option value="{{ doctor.specialty }}">{{ doctor.specialty }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="doctor-list">
+            {% for doctor in doctors %}
+            <div class="doctor-card">
+                <img src="{{ url_for('static', filename='images/' ~ doctor.profile_picture) }}" alt="Doctor Profile Picture">
+                <h3>{{ doctor.username }}</h3>
+                <p>Specialty: {{ doctor.Specialty }}</p>
+                <p>{{ doctor.bio }}</p>
+                <span class="availability {% if doctor.is_available %}online{% else %}offline{% endif %}">
+                    {% if doctor.is_available %}Available{% else %}Offline{% endif %}
+                </span>
+                <a href="{{ url_for('chat.consult_doc', username=doctor.username) }}" class="select-doctor">Chat</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+</html>

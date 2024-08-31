@@ -1,0 +1,234 @@
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+header {
+    background-color: #4a90e2;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 18px;
+}
+
+/* Doctor Selection Section */
+.doctor-selection {
+    padding: 40px 20px;
+}
+
+.doctor-selection h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.filter-search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-search input[type="text"],
+.filter-search select {
+    width: 40%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.filter-search input[type="text"]:focus,
+.filter-search select:focus {
+    border-color: #4a90e2;
+}
+
+.doctor-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Doctor Card Styling */
+.doctor-card {
+    background-color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    width: 280px;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.doctor-card img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.doctor-card h3 {
+    margin: 10px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.doctor-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.availability {
+    display: inline-block;
+    margin: 15px 0;
+    font-size: 14px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.online {
+    background-color: #28a745;
+    color: white;
+}
+
+.offline {
+    background-color: #dc3545;
+    color: white;
+}
+
+.select-doctor {
+    background-color: #4a90e2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.select-doctor:hover {
+    background-color: #357ab8;
+}
+
+.select-doctor:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
+}
+
+/* Chat Section Styling */
+.chat-section {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.chat-history {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    height: 400px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.chat-history p {
+    margin: 0 0 10px;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.chat-input input[type="text"]:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+.chat-input button {
+    background-color: #4a90e2;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.chat-input button:hover {
+    background-color: #357ab8;
+}
+
+.chat-input button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chat-section {
+        padding: 20px;
+    }
+
+    .chat-input input[type="text"] {
+        width: calc(100% - 100px);
+    }
+
+    .chat-input button {
+        width: 100px;
+    }
+}

@@ -4,6 +4,8 @@ from flask import Blueprint
 from flask_socketio import emit, join_room
 from webapp import socketio
 from .chat_controller import save_message
+from ..auth.models import User, Role
+from .. import db
 
 chat_blueprint = Blueprint(
     'chat',
@@ -13,10 +15,28 @@ chat_blueprint = Blueprint(
 )
 
 
-@chat_blueprint.route('/room', methods=['GET'])
+@chat_blueprint.route('/', methods=['GET'])
 @login_required
 def chat_room():
-    return render_template('chat_room.html')
+    doctors = db.session.query(
+        User.username,
+        User.specialty,
+        User.bio,
+        # User.is_available  # Assuming you have a field for availability
+    ).join(User.roles).filter(Role.name == 'doctor').all()
+    return render_template('chat_home.html', doctors=doctors)
+
+
+@chat_blueprint.route('/consult/<username>', methods=['GET'])
+@login_required
+def consult_doc(username):
+    # Fetch doctor details based on username
+
+    doctor = User.query.filter_by(username=username).first_or_404()
+
+    # Render the chat page with the doctor's details
+    return render_template('consult_doc.html', doctor=doctor)
+
 
 @socketio.on('send_message')
 @login_required

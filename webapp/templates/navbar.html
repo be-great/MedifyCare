@@ -13,8 +13,7 @@
             </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="#user">
-                    <i class="fa fa-fw fa-sign-out"></i>{{ current_user }}</a>
+                <button class="button is-primary" id="submitBtn">Subscribe</button>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('auth.logout')}}">

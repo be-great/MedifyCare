@@ -53,7 +53,7 @@ class RegisterForm(Form):
         print("---------------------------------------")
         print(self.speciality.data)
         print("---------------------------------------")
-        if self.role.data == '2' and (self.speciality.data == "" or self.bio.data == ""):
+        if self.role.data == '1' and (self.speciality.data == "" or self.bio.data == ""):
             self.speciality.errors.append('Speciality and Bio is required for doctors')
             return False 
         # Custom validation: Check if the username already exists

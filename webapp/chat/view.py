@@ -6,6 +6,7 @@ from webapp import socketio
 from ..auth.models import User, Role
 from .chat_controller import save_message, get_messages
 from .. import db
+from .models import Message
 
 chat_blueprint = Blueprint(
     'chat',
@@ -17,14 +18,26 @@ chat_blueprint = Blueprint(
 
 @chat_blueprint.route('/', methods=['GET'])
 @login_required
-def chat_room():
+def my_doctor():
     doctors = db.session.query(
         User.username,
         User.specialty,
         User.bio,
         # User.is_available  # Assuming you have a field for availability
     ).join(User.roles).filter(Role.name == 'doctor').all()
-    return render_template('chat_home.html', doctors=doctors)
+    return render_template('patient_home.html', doctors=doctors)
+
+
+@chat_blueprint.route('/patients', methods=['GET'])
+@login_required
+def my_patients():
+    # Fetch the list of patients who have sent messages to the doctor
+    patients = User.query.join(
+        Message,
+        (Message.sender_id == User.id) & (Message.receiver_id == current_user.id)
+    ).join(Role, User.roles).filter(Role.name == 'patient').distinct().all()
+
+    return render_template('doc_home.html', patients=patients)
 
 
 @chat_blueprint.route('/consult/<username>', methods=['GET'])
@@ -44,7 +57,8 @@ def consult_doc(username):
 @login_required
 def handle_join_room(room):
     join_room(room)
-    emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
+    emit('status', {'msg': current_user.username
+                    + ' has entered the room.'}, room=room)
 
 
 @socketio.on('connect')

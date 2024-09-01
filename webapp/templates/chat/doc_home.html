@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Patients</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='find_patient.css') }}">
+</head>
+<body>
+    <header>
+        <h1>My Patients</h1>
+        <p>View and chat with patients who have messaged you</p>
+    </header>
+
+    <section class="patient-list">
+        <h2>Patients Who Have Messaged You</h2>
+        <div class="patient-cards">
+            {% for patient in patients %}
+            <div class="patient-card">
+                <img src="{{ url_for('static', filename='images/' ~ patient.profile_picture) }}" alt="Patient Profile Picture">
+                <h3>{{ patient.username }}</h3>
+                <a href="" class="view-messages">View Messages</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+</html>

@@ -3,8 +3,8 @@ from flask_login import login_required, current_user
 from flask import Blueprint
 from flask_socketio import emit, join_room
 from webapp import socketio
-from .chat_controller import save_message
 from ..auth.models import User, Role
+from .chat_controller import save_message, get_messages
 from .. import db
 
 chat_blueprint = Blueprint(
@@ -31,22 +31,51 @@ def chat_room():
 @login_required
 def consult_doc(username):
     # Fetch doctor details based on username
-
     doctor = User.query.filter_by(username=username).first_or_404()
 
+    # fetch old messages
+    messages = get_messages(current_user.id, doctor.id)
+
     # Render the chat page with the doctor's details
-    return render_template('consult_doc.html', doctor=doctor)
+    return render_template('consult_doc.html', doctor=doctor, messages=messages)
+
+
+@socketio.on('join_room')
+@login_required
+def handle_join_room(room):
+    join_room(room)
+    emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
+
+
+@socketio.on('connect')
+def handle_connect():
+    print(f"{current_user.username} connected.")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print(f"{current_user.username} disconnected.")
 
 
 @socketio.on('send_message')
 @login_required
 def handle_send_message(data):
-    message = save_message(data['receiver_id'], data['message'])
-    emit('receive_message', {'message': message.content, 'sender_id': message.sender_id}, room=data['receiver_id'])
+    # Assume the room name format is "<doctor_username>_<patient_username>"
+    room = data['room']
+    # Extract the doctor username (or adjust as per your room naming logic)
+    doctor_username = room.split('_')[0]
 
-# @chat_blueprint.socketio.on('join')
-# @login_required
-# def handle_join(data):
-#     """remeber to edit this code so it will display message request instead"""
-#     join_room(data['room'])
-#     emit('status', {'msg': current_user.username + ' has joined the room.'}, room=data['room'])
+    # Get the receiver ID (doctor's ID)
+    doctor = User.query.filter_by(username=doctor_username).first()
+    if doctor:
+        # Save the message using the save_message function from chat_controller.py
+        message = save_message(receiver_id=doctor.id, content=data['message'])
+
+        # Emit the message to the room with additional details
+        emit('receive_message', {
+            'user': current_user.username,
+            'message': message.content,  # Using message.content from the saved message
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')  # Send timestamp if needed
+        }, room=room)
+    else:
+        # Handle case where doctor is not found
+        emit('error', {'msg': 'Doctor not found'}, room=room)

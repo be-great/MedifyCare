@@ -39,7 +39,7 @@ class RegisterForm(Form):
         EqualTo('password', message="Passwords must match")
     ])
     role = SelectField('Role', choices=[], validators=[DataRequired()])
-    speciality = StringField('Speciality')
+    specialty = StringField('Specialty')
     bio = StringField('Bio') 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
@@ -51,10 +51,10 @@ class RegisterForm(Form):
         if not super(RegisterForm, self).validate():
             return False
         print("---------------------------------------")
-        print(self.speciality.data)
+        print(self.specialty.data)
         print("---------------------------------------")
-        if self.role.data == '1' and (self.speciality.data == "" or self.bio.data == ""):
-            self.speciality.errors.append('Speciality and Bio is required for doctors')
+        if self.role.data == '1' and (self.specialty.data == "" or self.bio.data == ""):
+            self.specialty.errors.append('Specialty and Bio is required for doctors')
             return False 
         # Custom validation: Check if the username already exists
         user = User.query.filter_by(username=self.username.data).first()

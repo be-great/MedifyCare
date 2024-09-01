@@ -15,9 +15,14 @@
 
     <section class="chat-section">
         <div class="chat-window">
-            <div id="chat-history" class="chat-history"></div>
+            <div id="chat-history" class="chat-history">
+                <!-- Display old messages -->
+                {% for message in messages %}
+                    <p><strong>{{ 'You' if message.sender_id == current_user.id else doctor.username }}:</strong> {{ message.content }}</p>
+                {% endfor %}
+            </div>
             <div class="chat-input">
-                <input id="message" type="text" placeholder="Type your message..." autocomplete="off">
+                <input id="message" type="text" placeholder="Enter Your Query..." autocomplete="off">
                 <button id="send-btn">Send</button>
             </div>
         </div>
@@ -26,18 +31,21 @@
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <script type="text/javascript">
         const socket = io();
+            // Join the room specific to this doctor-patient chat
+        const room = "{{ doctor.username }}_{{ current_user.username }}";
+        socket.emit('join_room', room);
 
-        socket.on('message', function(data) {
+        socket.on('receive_message', function(data) {
             const chatHistory = document.getElementById('chat-history');
             chatHistory.innerHTML += `<p><strong>${data.user}:</strong> ${data.message}</p>`;
-            chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the bottom
+            chatHistory.scrollTop = chatHistory.scrollHeight;
         });
 
         document.getElementById('send-btn').addEventListener('click', function() {
             const messageInput = document.getElementById('message');
             const message = messageInput.value;
             if (message.trim()) {
-                socket.emit('chat', { user: "{{ current_user.username }}", message: message });
+                socket.emit('send_message', { room: room, message: message });
                 messageInput.value = '';
             }
         });
@@ -48,6 +56,8 @@
                 document.getElementById('send-btn').click();
             }
         });
+
+        
     </script>
 </body>
 </html>

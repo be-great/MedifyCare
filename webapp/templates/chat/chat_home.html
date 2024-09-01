@@ -20,7 +20,7 @@
         <div class="filter-search">
             <input type="text" placeholder="Search for a doctor...">
             <select>
-                <option value="">Filter by Speciality</option>
+                <option value="">Filter by Medical Field</option>
                 {% for doctor in doctors %}
                     <option value="{{ doctor.specialty }}">{{ doctor.specialty }}</option>
                 {% endfor %}

@@ -17,7 +17,7 @@ app.app_context().push()
 
 
 fake_users = [
-    {'username': 'Woko', 'role': 'doctor', 'speciality': 'psychological'},
+    {'username': 'Woko', 'role': 'doctor', 'specialty': 'psychological'},
     {'username': 'Esra', 'role': 'patient'}
 ]
 fake_roles = ['doctor', 'patient']

@@ -19,7 +19,7 @@
             <div class="patient-card">
                 <img src="{{ url_for('static', filename='images/' ~ patient.profile_picture) }}" alt="Patient Profile Picture">
                 <h3>{{ patient.username }}</h3>
-                <a href="" class="view-messages">View Messages</a>
+                <a href="{{ url_for('chat.view_patient_messages', username=patient.username) }}" class="view-messages">View Messages</a>
             </div>
             {% endfor %}
         </div>

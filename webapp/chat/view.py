@@ -16,7 +16,7 @@ chat_blueprint = Blueprint(
 )
 
 
-@chat_blueprint.route('/', methods=['GET'])
+@chat_blueprint.route('/doctors', methods=['GET'])
 @login_required
 def my_doctor():
     doctors = db.session.query(
@@ -26,6 +26,19 @@ def my_doctor():
         # User.is_available  # Assuming you have a field for availability
     ).join(User.roles).filter(Role.name == 'doctor').all()
     return render_template('patient_home.html', doctors=doctors)
+
+
+@chat_blueprint.route('/consult/<username>', methods=['GET'])
+@login_required
+def consult_doc(username):
+    # Fetch doctor details based on username
+    doctor = User.query.filter_by(username=username).first_or_404()
+
+    # fetch old messages
+    messages = get_messages(current_user.id, doctor.id)
+
+    # Render the chat page with the doctor's details
+    return render_template('consult_doc.html', doctor=doctor, messages=messages)
 
 
 @chat_blueprint.route('/patients', methods=['GET'])
@@ -40,17 +53,23 @@ def my_patients():
     return render_template('doc_home.html', patients=patients)
 
 
-@chat_blueprint.route('/consult/<username>', methods=['GET'])
+@chat_blueprint.route('/patient/<username>', methods=['GET'])
 @login_required
-def consult_doc(username):
-    # Fetch doctor details based on username
-    doctor = User.query.filter_by(username=username).first_or_404()
+def view_patient_messages(username):
+    # Ensure the current user is a doctor
+    # if not current_user.is_doctor:
+    #     return redirect(url_for('home'))
 
-    # fetch old messages
-    messages = get_messages(current_user.id, doctor.id)
+    # Fetch the patient
+    patient = User.query.filter_by(username=username).first_or_404()
 
-    # Render the chat page with the doctor's details
-    return render_template('consult_doc.html', doctor=doctor, messages=messages)
+    # Fetch the messages between the doctor and the patient
+    messages = Message.query.filter(
+        ((Message.sender_id == patient.id) & (Message.receiver_id == current_user.id)) |
+        ((Message.sender_id == current_user.id) & (Message.receiver_id == patient.id))
+    ).order_by(Message.timestamp.asc()).all()
+
+    return render_template('doctor_chat.html', patient=patient, messages=messages)
 
 
 @socketio.on('join_room')
@@ -73,23 +92,27 @@ def handle_disconnect():
 @socketio.on('send_message')
 @login_required
 def handle_send_message(data):
-    # Assume the room name format is "<doctor_username>_<patient_username>"
     room = data['room']
-    # Extract the doctor username (or adjust as per your room naming logic)
-    doctor_username = room.split('_')[0]
+    doctor_username, patient_username = room.split('_')
 
-    # Get the receiver ID (doctor's ID)
-    doctor = User.query.filter_by(username=doctor_username).first()
-    if doctor:
-        # Save the message using the save_message function from chat_controller.py
-        message = save_message(receiver_id=doctor.id, content=data['message'])
+    # Determine the receiver based on who is sending the message
+    if current_user.username == doctor_username:
+        # If the current user is the doctor, the receiver is the patient
+        receiver = User.query.filter_by(username=patient_username).first()
+    else:
+        # Otherwise, the current user is the patient, and the receiver is the doctor
+        receiver = User.query.filter_by(username=doctor_username).first()
+
+    if receiver:
+        # Save the message using the save_message function
+        message = save_message(receiver_id=receiver.id, content=data['message'])
 
         # Emit the message to the room with additional details
         emit('receive_message', {
             'user': current_user.username,
-            'message': message.content,  # Using message.content from the saved message
+            'message': message.content,
             'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')  # Send timestamp if needed
         }, room=room)
     else:
-        # Handle case where doctor is not found
-        emit('error', {'msg': 'Doctor not found'}, room=room)
+        # Handle case where the receiver is not found
+        emit('error', {'msg': 'Receiver not found'}, room=room)

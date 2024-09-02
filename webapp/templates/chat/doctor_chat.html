@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with {{ doctor.username }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='find_doc.css') }}">
-</head>
+    <title>Chat with {{ patient.username }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='doctor_chat.css') }}">
 </head>
 <body>
     <header>
-        <h1>Chat with Dr. {{ doctor.username }}</h1>
-        <p>Specialty: {{ doctor.speciality }}</p>
+        <h1>Chat with {{ patient.username }}</h1>
     </header>
 
     <section class="chat-section">
@@ -18,22 +16,27 @@
             <div id="chat-history" class="chat-history">
                 <!-- Display old messages -->
                 {% for message in messages %}
-                    <p><strong>{{ 'You' if message.sender_id == current_user.id else doctor.username }}:</strong> {{ message.content }}</p>
+                    <div class="message-container">
+                        <p class="message {{ 'current-user' if message.sender_id == current_user.id else 'other-person' }}">
+                            <strong>{{ 'You' if message.sender_id == current_user.id else patient.username }}:</strong> {{ message.content }}
+                        </p>
+                    </div>
                 {% endfor %}
             </div>
             <div class="chat-input">
-                <input id="message" type="text" placeholder="Enter Your Query..." autocomplete="off">
+                <input id="message" type="text" placeholder="Respond To Query..." autocomplete="off">
                 <button id="send-btn">Send</button>
             </div>
         </div>
     </section>
+</body>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script type="text/javascript">
         const socket = io();
 
         // Define the room name
-        const room = "{{ doctor.username }}_{{ current_user.username }}";
+        const room = "{{ patient.username }}_{{ current_user.username }}";
         console.log('Joining room:', room);
         socket.emit('join_room', room);
 
@@ -77,4 +80,3 @@
 
 </body>
 </html>
-

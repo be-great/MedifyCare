@@ -25,7 +25,9 @@ def my_doctor():
         User.bio,
         # User.is_available  # Assuming you have a field for availability
     ).join(User.roles).filter(Role.name == 'doctor').all()
-    return render_template('patient_home.html', doctors=doctors)
+
+    specialties = list(set(doctor.specialty for doctor in doctors))
+    return render_template('patient_home.html', doctors=doctors, specialties=specialties)
 
 
 @chat_blueprint.route('/consult/<username>', methods=['GET'])
@@ -72,17 +74,18 @@ def view_patient_messages(username):
     return render_template('doctor_chat.html', patient=patient, messages=messages)
 
 
-@socketio.on('join_room')
-@login_required
-def handle_join_room(room):
-    join_room(room)
-    emit('status', {'msg': current_user.username
-                    + ' has entered the room.'}, room=room)
+# @socketio.on('join_room')
+# @login_required
+# def handle_join_room(room):
+#     join_room(room)
+#     emit('status', {'msg': current_user.username
+#                     + ' has entered the room.'}, room=room)
 
 
 @socketio.on('connect')
 def handle_connect():
     print(f"{current_user.username} connected.")
+
 
 @socketio.on('disconnect')
 def handle_disconnect():

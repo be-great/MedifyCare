@@ -1,13 +1,15 @@
+/* chat.css */
+
 /* General styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #e5ddd5; /* Light gray background */
+    background-color: #e5e5e5; /* Light gray background */
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #075e54; /* WhatsApp green */
+    background-color: #4a90e2; /* Primary color */
     color: white;
     text-align: center;
     padding: 15px 0;
@@ -23,7 +25,6 @@ header p {
     font-size: 16px;
 }
 
-/* Chat section styles */
 /* Chat section styles */
 .chat-section {
     width: 100%;
@@ -62,17 +63,16 @@ header p {
 
 .message.current-user {
     align-self: flex-end; /* Align to the right */
-    background-color: #dcf8c6; /* Light green for sender */
+    background-color: #4a90e2; /* Primary color for sender */
+    color: white; /* Text color for sender */
     text-align: right;
-
-    margin-bottom: 10px;
 }
 
 .message.other-person {
     align-self: flex-start; /* Align to the left */
     background-color: #ffffff; /* White for receiver */
+    color: black; /* Text color for receiver */
     text-align: left;
-    color: black
 }
 
 
@@ -90,6 +90,7 @@ header p {
     z-index: 1000;     /* Keeps it above other content */
 }
 
+
 #message {
     flex: 1;
     padding: 10px;
@@ -103,13 +104,12 @@ header p {
     padding: 10px 20px;
     border: none;
     border-radius: 20px; /* Rounded button */
-    background: #075e54; /* WhatsApp green */
+    background: #4a90e2; /* Primary color */
     color: white;
     cursor: pointer;
     font-size: 16px;
 }
 
 #send-btn:hover {
-    background: #128c7e; /* Darker green on hover */
+    background: #357ABD; /* Darker shade of the primary color on hover */
 }
-

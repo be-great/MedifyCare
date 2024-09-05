@@ -4,34 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consult a Doctor</title>
-    <!-- Link to the specific CSS file for this page -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='find_doc.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='patient_home.css') }}">
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <h1>Consult a Doctor</h1>
         <p>Get expert medical advice from our team of specialists</p>
     </header>
 
-    <!-- Doctor Selection Section -->
     <section class="doctor-selection">
         <h2>Choose a Doctor</h2>
         <div class="filter-search">
-            <input type="text" placeholder="Search for a doctor...">
-            <select>
+            <input type="text" id="search-input" placeholder="Search for a doctor...">
+            <select id="filter-select">
                 <option value="">Filter by Medical Field</option>
-                {% for doctor in doctors %}
-                    <option value="{{ doctor.specialty }}">{{ doctor.specialty }}</option>
+                {% for specialty in specialties %}
+                    <option value="{{ specialty }}">{{ specialty }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="doctor-list">
             {% for doctor in doctors %}
-            <div class="doctor-card">
+            <div class="doctor-card" data-specialty="{{ doctor.specialty }}">
                 <img src="{{ url_for('static', filename='images/' ~ doctor.profile_picture) }}" alt="Doctor Profile Picture">
                 <h3>{{ doctor.username }}</h3>
-                <p>Specialty: {{ doctor.Specialty }}</p>
+                <p>Medical Field: {{ doctor.specialty }}</p>
                 <p>{{ doctor.bio }}</p>
                 <span class="availability {% if doctor.is_available %}online{% else %}offline{% endif %}">
                     {% if doctor.is_available %}Available{% else %}Offline{% endif %}
@@ -41,5 +41,36 @@
             {% endfor %}
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const filterSelect = document.getElementById('filter-select');
+            const doctorCards = document.querySelectorAll('.doctor-card');
+
+            function filterDoctors() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedSpecialty = filterSelect.value.toLowerCase();
+
+                doctorCards.forEach(card => {
+                    const doctorName = card.querySelector('h3').textContent.toLowerCase();
+                    const doctorSpecialty = card.getAttribute('data-specialty').toLowerCase();
+
+                    const matchesSearch = doctorName.includes(searchTerm);
+                    const matchesSpecialty = selectedSpecialty === '' || doctorSpecialty === selectedSpecialty;
+
+                    if (matchesSearch && matchesSpecialty) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', filterDoctors);
+            filterSelect.addEventListener('change', filterDoctors);
+        });
+    </script>
 </body>
 </html>
+

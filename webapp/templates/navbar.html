@@ -1,6 +1,4 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -8,41 +6,37 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('main.index')}}"></a>
-            </li>
             {% if current_user.is_authenticated %}
-            <li class="nav-item">
-                <button class="button is-primary" id="submitBtn">Subscribe</button>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('auth.logout')}}">
-                <i class="fa fa-fw fa-sign-out"></i>Logout</a>
-            
-            {% if current_user.is_authenticated and current_user.has_role('patient') %}
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('chat.my_doctor') }}">
-                <i class="fa fa-fw fa-comments"></i>Consult A Doctor</a>
-            </li> 
-            
+                <li class="nav-item">
+                    <button class="button is-primary" id="submitBtn">Subscribe</button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('auth.logout')}}">
+                        <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+                </li>
+                
+                {% if current_user.is_active %}
+                    {% if current_user.has_role('patient') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('chat.my_doctor') }}">
+                                <i class="fa fa-fw fa-comments"></i>Consult A Doctor</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('chat.my_patients') }}">
+                                <i class="fa fa-fw fa-comments"></i>Chat with Patient</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
             {% else %}
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('chat.my_patients') }}">
-                <i class="fa fa-fw fa-comments"></i>Chat with Patient</a>
-            </li>
-            {% endif %}
-
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('auth.login')}}">
-                <i class="fa fa-fw fa-sign-in"></i>Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('auth.register')}}">
-                <i class="fa fa-fw fa-sign-in"></i>Register</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('auth.login')}}">
+                        <i class="fa fa-fw fa-sign-in"></i>Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('auth.register')}}">
+                        <i class="fa fa-fw fa-sign-in"></i>Register</a>
+                </li>
             {% endif %}
         </ul>
     </div>

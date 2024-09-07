@@ -24,7 +24,6 @@ def login():
         login_user(user, remember=form.remember.data)
         flash("You have been logged in.", category="success")
         return redirect(url_for('main.index'))
-
     return render_template('login.html', form=form)
 
 

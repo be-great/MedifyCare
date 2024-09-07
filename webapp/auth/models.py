@@ -12,8 +12,8 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(255), nullable=False, index=True, unique=True)
     password = db.Column(db.String(255))
-    is_active = db.Column(db.Boolean, default=False)
     specialty = db.Column(db.String(255))
+    activetion= db.Column(db.Boolean, default=False)
     bio = db.Column(db.String(255))
     roles = db.relationship(
         'Role',
@@ -48,6 +48,10 @@ class User(db.Model):
             return True
 
     @property
+    def is_active(self):
+        return True
+
+    @property
     def is_anonymous(self):
         if isinstance(self, AnonymousUserMixin):
             return True
@@ -58,7 +62,10 @@ class User(db.Model):
         return str(self.id)
 
     def activate(self):
-        self.is_active = True
+        self.activetion = True
+    @property
+    def actived_subscription(self):
+        return self.activetion
 
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

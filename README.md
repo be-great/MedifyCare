@@ -51,3 +51,4 @@ Helping-URL: https://testdriven.io/blog/flask-stripe-tutorial/
 Test-Card: 4242 4242 4242 4242
 
 ```
+TODO: metadata is empty

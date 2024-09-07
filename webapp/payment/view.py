@@ -69,11 +69,14 @@ def success():
     session_id = request.args.get('session_id')
     stripe.api_key = stripe_keys['secret_key']
     session = stripe.checkout.Session.retrieve(session_id)
-    user_id = session['metadata']['user_id']
-    user = User.query.get(user_id)
-    if user:
-        user.activate()
-        db.session.commit()
+    print("**************************************************")
+    user_id = session['metadata']
+    print(user_id)
+    print("**************************************************")
+    # user = User.query.get(user_id)
+    # if user:
+    #     user.activate()
+    #     db.session.commit()
     flash('Your payment succeeded.', category="success")
     return redirect(url_for('main.index'))
 

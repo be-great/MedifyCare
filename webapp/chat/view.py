@@ -25,7 +25,6 @@ def my_doctor():
         User.bio,
         # User.is_available  # Assuming you have a field for availability
     ).join(User.roles).filter(Role.name == 'doctor').all()
-
     specialties = list(set(doctor.specialty for doctor in doctors))
     return render_template('patient_home.html', doctors=doctors, specialties=specialties)
 

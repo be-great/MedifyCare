@@ -1,72 +1,102 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial;
-    max-width: 700px;
+body {
+    background-color: #ffffff;
+    font-family: 'Poppins', sans-serif;
 }
 
-.main-header {
-    width: 100%;
-    background: blue;
-    background-size:cover
-    padding-bottom: 30px;
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-header{
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
+.navbar-brand {
+    font-weight: 600;
+    font-size: 24px;
+    color: #28a745;
 }
-.logo{
-    color: pink;
+
+.nav-link {
+    color: #555;
+    font-weight: 500;
+    margin-left: 20px;
 }
-.nav ul{
-    margin: 0;
+a4eeb3
+.nav-link:hover {
+    color: #28a745;
 }
-.nav li{
-    display: inline;
-    
+
+.services-section, .about-doctors-section {
+    margin-top: 40px;
+    padding: 40px;
+    background-color: #a4eeb3;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
-.nav a{
-    display: inline-block;
-    padding: 1em;
-    color:beige;
+
+.services-section h2, .about-doctors-section h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title a {
     text-decoration: none;
+    color: #333;
+    font-weight: 600;
 }
-.nav a:hover{
-    color: pink;
+
+.card-title a:hover {
+    color: #28a745;
 }
-.main-nav{
-    text-align: center;
-    font-size: 1.1em;
-    padding-left: 100px;
+
+.card-text {
+    color: #555;
+    font-size: 14px;
+    margin-top: 10px;
 }
-.container{
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 20px
+
+.about-doctors-section img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
 }
-p{
-    color: gray;
-    padding-bottom: 30px;
-    margin: 0 auto;
-    font-size: 16px;
-    font-family: Arial;
+
+.about-doctors-section p {
+    margin-top: 15px;
+    color: #666;
+    font-size: 14px;
 }
-.section-header{
-    color:brown;
-    text-align: center;
-    font-family: Arial;
-}
-.fixed-size-image{
-    width: 500px;
-    height: 200px;
-    align-items: center;
+
+footer {
+    background-color: #28a745;
+    color: #fff;
     padding: 20px;
-}
-.size-p{
-    color: brown;
     text-align: center;
-    font-size: larger;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
 }

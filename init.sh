@@ -35,4 +35,5 @@ echo --------------------
 echo Running the app
 echo --------------------
 export FLASK_ENV=development
+export FLASK_DEBUG=1
 flask run

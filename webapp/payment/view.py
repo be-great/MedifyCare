@@ -2,6 +2,7 @@ import os
 import stripe
 from flask import Flask, jsonify, request, Blueprint, flash, redirect, url_for
 from webapp.auth.models import db, User
+from flask_login import current_user
 payment_blueprint = Blueprint(
 		    'pay',
 		    __name__,
@@ -48,7 +49,8 @@ def create_checkout_session():
                     },
                     "quantity": 1,
                 }
-            ]
+            ],
+            metadata={'user_id': current_user.id}
         )
         return jsonify({"sessionId": checkout_session["id"]})
     except Exception as e:
@@ -68,20 +70,24 @@ def success():
     
     session_id = request.args.get('session_id')
     stripe.api_key = stripe_keys['secret_key']
-    session = stripe.checkout.Session.retrieve(session_id)
-    print("**************************************************")
-    user_id = session['metadata']
-    print(user_id)
-    print("**************************************************")
-    # user = User.query.get(user_id)
-    # if user:
-    #     user.activate()
-    #     db.session.commit()
-    flash('Your payment succeeded.', category="success")
-    return redirect(url_for('main.index'))
+    try:
+        # Retrieve session information from Stripe
+        session = stripe.checkout.Session.retrieve(session_id)
+        user_id = session['metadata']['user_id']  # Correctly access user_id from metadata
+        print(f"User ID from Stripe Session: {user_id}")
 
+        # Activate the user's account (assuming you have an activate method)
+        user = User.query.get(user_id)
+        if user:
+            user.activate()
+            db.session.commit()
+            flash('Your account has been activated.', category="success")
+    except Exception as e:
+        flash(f"Error activating user: {str(e)}", category="danger")
+    return redirect(url_for('main.index'))
 @payment_blueprint.route("/cancelled")
 def cancelled():
+
     flash('Your payment was cancelled.', category="success")
     return redirect(url_for('main.index'))
 

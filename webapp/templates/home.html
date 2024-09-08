@@ -41,9 +41,10 @@
     <div class="row">
         {% for doctor in doctors %}
         <div class="col-md-4">
+            <img src="../static/images/{{ 'doc1.png' if loop.index % 2 == 0 else 'doc2.jpg' }}" class="card-img-top" alt="Doctor picture">
             <h5 class="card-title">{{ doctor.username }}</h5>
             <p class="card-text">Medical Field: {{ doctor.specialty }}</p>
-            <p class="card-text">{{ doctor.bio }}</p>
+            <p class="card-text">Experice: {{ doctor.bio }}</p>
         </div>
         {% endfor %}
     </div>

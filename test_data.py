@@ -18,10 +18,10 @@ app.app_context().push()
 
 fake_users = [
     {'username': 'Esra', 'role': 'patient'},
-    {'username': 'Dr.James Smith', 'role': 'doctor', 'specialty': 'cardiology', 'bio': 'Dr. James Smith is a board-certified cardiologist with over 15 years of experience in diagnosing and treating heart conditions. He specializes in interventional cardiology and is passionate about improving patient outcomes through advanced cardiac procedures.'},
-    {'username': 'Dr.Susan Martin', 'role': 'doctor', 'specialty': 'neurology', 'bio': 'Dr. Susan Martin is a neurologist with a focus on neurodegenerative diseases and stroke management. With a keen interest in research and patient care, she works to advance treatment options for neurological disorders and enhance patients\' quality of life.'},
-    {'username': 'Dr.Michael Johnson', 'role': 'doctor', 'specialty': 'orthopedics', 'bio': 'Dr. Michael Johnson is an orthopedic surgeon specializing in sports injuries and joint replacement. He is dedicated to helping patients recover from musculoskeletal injuries and improve their mobility through both surgical and non-surgical methods.'},
-    {'username': 'Dr.Emily Clark', 'role': 'doctor', 'specialty': 'pediatrics', 'bio': 'Dr. Emily Clark is a pediatrician with expertise in child development and preventive care. She is committed to providing compassionate care to children and their families, focusing on early diagnosis and management of common pediatric conditions.'}
+    {'username': 'Dr.James Smith', 'role': 'doctor', 'specialty': 'cardiology', 'bio': '15 years of experience in diagnosing and treating heart conditions.'},
+    {'username': 'Dr.Susan Martin', 'role': 'doctor', 'specialty': 'neurology', 'bio': '5 years of experiance in neurologist with a focus on neurodegenerative diseases and stroke management.'},
+    {'username': 'Dr.Michael Johnson', 'role': 'doctor', 'specialty': 'orthopedics', 'bio': '7 years of experinace in orthopedic surgeon specializing in sports injuries and joint replacement.'},
+    {'username': 'Dr.Emily Clark', 'role': 'doctor', 'specialty': 'pediatrics', 'bio': '10 years expertise in child development and preventive care.focusing on early diagnosis and management of common pediatric conditions.'}
 ]
 fake_roles = ['doctor', 'patient']
 

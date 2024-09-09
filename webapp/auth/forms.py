@@ -3,8 +3,13 @@ from flask_wtf import RecaptchaField
 from wtforms import StringField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from .models import User, Role
-
-
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
+# for upload an image
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class LoginForm(Form):
     username = StringField('Username', [DataRequired(), Length(max=255)])
     password = PasswordField('Password', [DataRequired()])
@@ -40,7 +45,8 @@ class RegisterForm(Form):
     ])
     role = SelectField('Role', choices=[], validators=[DataRequired()])
     specialty = StringField('Specialty')
-    bio = StringField('Bio') 
+    bio = StringField('Bio')
+    image = FileField('Upload Image')
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         # Fetch roles from the database and set choices
@@ -50,12 +56,23 @@ class RegisterForm(Form):
         # Perform standard validation
         if not super(RegisterForm, self).validate():
             return False
-        print("---------------------------------------")
-        print(self.specialty.data)
-        print("---------------------------------------")
+        print("******************************")
+        print("self.image.data : ", self.image.data)
+        print("******************************")
         if self.role.data == '1' and (self.specialty.data == "" or self.bio.data == ""):
-            self.specialty.errors.append('Specialty and Bio is required for doctors')
-            return False 
+            self.specialty.errors.append('Specialty and Bio and image is required for doctors')
+            return False
+
+        # Validate the image file
+        # if self.image.data is None:
+        #     self.image.errors.append('Image is required for doctors')
+        #     return False
+        if self.image.data and self.image.data.filename:
+            file_data = self.image.data
+            filename = secure_filename(file_data.filename)
+            if not allowed_file(filename):
+                self.image.errors.append('Invalid image format')
+                return False
         # Custom validation: Check if the username already exists
         user = User.query.filter_by(username=self.username.data).first()
         if user:

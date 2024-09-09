@@ -16,6 +16,7 @@ def index():
         User.username,
         User.specialty,
         User.bio,
+		User.image_filename
         # User.is_available  # Assuming you have a field for availability
     ).join(User.roles).filter(Role.name == 'doctor').all()
 

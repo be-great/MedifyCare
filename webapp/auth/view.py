@@ -2,19 +2,24 @@ from flask import (render_template,
                    Blueprint,
                    redirect,
                    url_for,
-                   flash)
+                   flash, current_app)
 from flask_login import login_user, logout_user
 from .models import db, User, Role
 from .forms import LoginForm, RegisterForm
+from werkzeug.utils import secure_filename
+import os
 
-
+# for upload an image
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 auth_blueprint = Blueprint(
     'auth',
     __name__,
     template_folder='../templates/auth',
     url_prefix="/auth"
 )
-
 
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -44,6 +49,11 @@ def register():
         new_user.roles.append(selected_role)
         new_user.specialty = form.specialty.data
         new_user.bio = form.bio.data
+        file = form.image.data
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            new_user.image_filename = filename
         db.session.add(new_user)
         db.session.commit()
 

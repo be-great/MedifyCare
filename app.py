@@ -5,5 +5,4 @@ env = os.environ.get('WEBAPP_ENV', 'dev') ## if is not in environment just retur
 app = create_app('config.%sConfig' % env.capitalize())
 
 if __name__ == '__main__':
-    app.run(ssl_context='adhoc')
-
+    app.run()

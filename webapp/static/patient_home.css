@@ -69,10 +69,14 @@ header p {
     gap: 20px;
 }
 
+.hidden {
+    display: none;
+}
+
 /* Doctor Card Styling */
 .doctor-card {
-    background-color: white;
-    border: none;
+    background-color: #f7f7f7;
+    border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 20px;
     width: 280px;
@@ -97,7 +101,7 @@ header p {
 .doctor-card h3 {
     margin: 10px 0;
     font-size: 20px;
-    color: #333;
+    color: #2a4d69;;
 }
 
 .doctor-card p {
@@ -125,7 +129,7 @@ header p {
     color: white;
 }
 
-.select-doctor {
+.click-btn {
     background-color: #4a90e2;
     color: white;
     padding: 10px 20px;
@@ -134,13 +138,16 @@ header p {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    display: block; /* Ensure buttons are on their own lines */
+    margin-top: 10px; /* Add space above each button */
 }
 
-.select-doctor:hover {
+
+.click-btn:hover {
     background-color: #357ab8;
 }
 
-.select-doctor:focus {
+.click-btn:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
 }

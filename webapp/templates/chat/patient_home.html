@@ -35,8 +35,11 @@
                 <p>{{ doctor.bio }}</p>
                 <span class="availability {% if doctor.is_available %}online{% else %}offline{% endif %}">
                     {% if doctor.is_available %}Available{% else %}Offline{% endif %}
-                </span>                
-                <a href="{{ url_for('chat.consult_doc', username=doctor.username) }}" class="select-doctor">Chat</a>
+                </span>            
+                <a href="{{ url_for('chat.consult_doc', username=doctor.username) }}" class="click-btn">Chat</a>
+
+                <a href="{{ url_for('chat.video_call') }}" class="click-btn">Video Call</a>
+                <a href="" class="click-btn">Scedule Visit</a>
             </div>
             {% endfor %}
         </div>

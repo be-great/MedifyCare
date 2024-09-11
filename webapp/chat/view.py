@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from flask_login import login_required, current_user
 from flask import Blueprint
 from flask_socketio import emit
@@ -110,3 +110,23 @@ def handle_send_message(data):
     else:
         # Handle case where the receiver is not found
         emit('error', {'msg': 'Receiver not found'}, room=room)
+
+
+@chat_blueprint.route('/video-call/<username>', methods=['GET', 'POST'])
+def video_call(username):
+    if request.method == 'POST':
+        whatsapp_number = request.form['whatsapp_number']
+        
+        # Fetch the doctor by username
+        doctor = User.query.filter_by(username=username).first_or_404()
+        
+        if doctor:
+            # Save whatsapp_number to the message model
+            message = Message.query.filter_by(doctor_id=doctor.id, patient_id=current_user.id).first()
+            if message:
+                message.whatsapp_number = whatsapp_number
+                db.session.commit()
+            return redirect(url_for('chat.consult_doc', username=current_user.username))
+
+    return render_template('video_call.html')
+

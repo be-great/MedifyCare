@@ -45,11 +45,7 @@ Experience healthcare like never before with MedifyCare. Your health journey sta
     <div class="row">
         {% for doctor in doctors %}
         <div class="col-md-4">
-<<<<<<< HEAD
-            <img src="../static/images/{{ doctor.image_filename if doctor.image_filename else 'doc2.jpg' }}" class="card-img-top" alt="Doctor picture" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
-=======
             <img src="../static/images/{{ 'doc1.png' if loop.index % 2 == 1 else 'doc2.jpg' }}" class="card-img-top" alt="Doctor picture">
->>>>>>> fab7309 (done)
             <h5 class="card-title">{{ doctor.username }}</h5>
             <p class="card-text">Medical Field: {{ doctor.specialty }}</p>
             <p class="card-text">Experice: {{ doctor.bio }}</p>

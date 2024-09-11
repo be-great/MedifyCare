@@ -13,9 +13,9 @@ class User(db.Model):
     username = db.Column(db.String(255), nullable=False, index=True, unique=True)
     password = db.Column(db.String(255))
     specialty = db.Column(db.String(255))
-    activetion= db.Column(db.Boolean, default=False)
+    activetion = db.Column(db.Boolean, default=False)
     bio = db.Column(db.String(255))
-    image_filename =  db.Column(db.String(150))
+    image_filename = db.Column(db.String(150))
     roles = db.relationship(
         'Role',
         secondary=roles,

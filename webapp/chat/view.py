@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login import login_required, current_user
 from flask import Blueprint
-from flask_socketio import emit, join_room
+from flask_socketio import emit
 from webapp import socketio
 from ..auth.models import User, Role
 from .chat_controller import save_message, get_messages
@@ -71,14 +71,6 @@ def view_patient_messages(username):
     ).order_by(Message.timestamp.asc()).all()
 
     return render_template('doctor_chat.html', patient=patient, messages=messages)
-
-
-# @socketio.on('join_room')
-# @login_required
-# def handle_join_room(room):
-#     join_room(room)
-#     emit('status', {'msg': current_user.username
-#                     + ' has entered the room.'}, room=room)
 
 
 @socketio.on('connect')

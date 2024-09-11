@@ -29,13 +29,13 @@
         <div class="doctor-list">
             {% for doctor in doctors %}
             <div class="doctor-card" data-specialty="{{ doctor.specialty }}">
-                <img src="{{ url_for('static', filename='images/' ~ doctor.profile_picture) }}" alt="Doctor Profile Picture">
+                <img src="../static/images/{{ 'doc1.png' if loop.index % 2 == 1 else 'doc2.jpg' }}" class="card-img-top" alt="Doctor picture">
                 <h3>{{ doctor.username }}</h3>
                 <p>Medical Field: {{ doctor.specialty }}</p>
                 <p>{{ doctor.bio }}</p>
                 <span class="availability {% if doctor.is_available %}online{% else %}offline{% endif %}">
                     {% if doctor.is_available %}Available{% else %}Offline{% endif %}
-                </span>
+                </span>                
                 <a href="{{ url_for('chat.consult_doc', username=doctor.username) }}" class="select-doctor">Chat</a>
             </div>
             {% endfor %}

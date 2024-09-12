@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from flask_login import login_required, current_user
 from flask import Blueprint
 from flask_socketio import emit
@@ -102,31 +102,25 @@ def handle_send_message(data):
         message = save_message(receiver_id=receiver.id, content=data['message'])
 
         # Emit the message to the room with additional details
-        emit('receive_message', {
+        socketio.emit('receive_message', {
             'user': current_user.username,
             'message': message.content,
-            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')  # Send timestamp if needed
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }, room=room)
     else:
         # Handle case where the receiver is not found
         emit('error', {'msg': 'Receiver not found'}, room=room)
 
 
-@chat_blueprint.route('/video-call/<username>', methods=['GET', 'POST'])
-def video_call(username):
-    if request.method == 'POST':
-        whatsapp_number = request.form['whatsapp_number']
-        
-        # Fetch the doctor by username
-        doctor = User.query.filter_by(username=username).first_or_404()
-        
-        if doctor:
-            # Save whatsapp_number to the message model
-            message = Message.query.filter_by(doctor_id=doctor.id, patient_id=current_user.id).first()
-            if message:
-                message.whatsapp_number = whatsapp_number
-                db.session.commit()
-            return redirect(url_for('chat.consult_doc', username=current_user.username))
+@chat_blueprint.route('/request_video_call', methods=['POST'])
+def request_video_call():
+    data = request.get_json()
+    video_call_id = data.get('videoCallID')
 
-    return render_template('video_call.html')
+    # Save the video call request to the database
+    new_message = Message(video_call_id=video_call_id, user_id=current_user.id, is_video_call=True)
+    db.session.add(new_message)
+    db.session.commit()
+
+    return jsonify({'status': 'success', 'message': 'Video call request submitted!'})
 

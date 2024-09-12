@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consult a Doctor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='patient_home.css') }}">
-    <style>
-        .hidden { display: none; }
-    </style>
 </head>
 <body>
     <header>
@@ -38,10 +35,24 @@
                 </span>            
                 <a href="{{ url_for('chat.consult_doc', username=doctor.username) }}" class="click-btn">Chat</a>
 
-                <a href="{{ url_for('chat.video_call') }}" class="click-btn">Video Call</a>
-                <a href="" class="click-btn">Scedule Visit</a>
+                <button class="videoCallRequestBtn click-btn" data-doctor-id="{{ doctor.id }}">Request Video Call</button>
+                <a href="" class="click-btn">Schedule Visit</a>
             </div>
             {% endfor %}
+        </div>
+
+        <!-- Modal -->
+        <div id="videoCallModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Request a Video Call</h2>
+                <form id="videoCallForm">
+                    <label for="videoCallID">Enter your WhatsApp Number or Video Call ID:</label>
+                    <input type="text" id="videoCallID" name="videoCallID" required>
+                    <input type="hidden" id="doctorId" name="doctorId">
+                    <button type="submit" class="btn btn-success">Submit Request</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -72,8 +83,51 @@
 
             searchInput.addEventListener('input', filterDoctors);
             filterSelect.addEventListener('change', filterDoctors);
+
+            // Handle modal
+            const modal = document.getElementById('videoCallModal');
+            const closeModal = document.querySelector('.close');
+
+            document.querySelectorAll('.videoCallRequestBtn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const doctorId = this.getAttribute('data-doctor-id');
+                    document.getElementById('doctorId').value = doctorId;
+                    modal.style.display = 'block';
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // Handle form submission
+            document.getElementById('videoCallForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const videoCallID = document.getElementById('videoCallID').value;
+                const doctorId = document.getElementById('doctorId').value;
+
+                // AJAX request to submit the video call request
+                fetch('/request_video_call', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ videoCallID, doctorId })
+                }).then(response => response.json())
+                .then(data => {
+                    alert('Video Call Request Submitted');
+                    modal.style.display = 'none';
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            });
         });
     </script>
 </body>
 </html>
-

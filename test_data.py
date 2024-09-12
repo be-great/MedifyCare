@@ -68,6 +68,5 @@ def generate_users():
     return users
 
 
-
 generate_roles()
 generate_users()

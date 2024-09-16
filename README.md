@@ -51,4 +51,9 @@ Helping-URL: https://testdriven.io/blog/flask-stripe-tutorial/
 Test-Card: 4242 4242 4242 4242
 
 ```
-TODO: metadata is empty
+* patient:
+video_feature feild => active + there is whatsapp number
+* doctor:
+doctor open it 
+
+#flash problem => payment model

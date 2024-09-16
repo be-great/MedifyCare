@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask import Blueprint
 from flask_socketio import emit
@@ -7,6 +7,7 @@ from ..auth.models import User, Role
 from .chat_controller import save_message, get_messages
 from .. import db
 from .models import Message
+from .forms import PhoneNumberForm
 
 chat_blueprint = Blueprint(
     'chat',
@@ -15,17 +16,25 @@ chat_blueprint = Blueprint(
     url_prefix="/chat"
 )
 
-
-@chat_blueprint.route('/doctors', methods=['GET'])
+from .models import Message
+@chat_blueprint.route('/doctors', methods=['GET', 'POST'])
 @login_required
 def my_doctor():
     doctors = db.session.query(
+        User.id,
         User.username,
         User.specialty,
         User.bio,
         # User.is_available  # Assuming you have a field for availability
     ).join(User.roles).filter(Role.name == 'doctor').all()
     specialties = list(set(doctor.specialty for doctor in doctors))
+    if request.method == 'POST':
+        phone_number = request.form.get('videoCallID')
+        doctor_id = request.form.get('doctorId')
+        msg = Message(sender_id=current_user.id, receiver_id=doctor_id, phone_number=phone_number)
+        db.session.add(msg)
+        db.session.commit()
+        flash("whatsapp number sended", category="success")
     return render_template('patient_home.html', doctors=doctors, specialties=specialties)
 
 
@@ -123,4 +132,45 @@ def request_video_call():
     db.session.commit()
 
     return jsonify({'status': 'success', 'message': 'Video call request submitted!'})
+from .forms import PhoneNumberForm
+from .models import PhoneNumber
+from ..auth.models import roles
+@chat_blueprint.route('/send_phone_number', methods=['GET', 'POST'])
+@login_required
+def send_phone_number():
+    form = PhoneNumberForm()
 
+    # Get the "doctor" role
+    doctor_role = Role.query.filter_by(name='doctor').first()
+
+    if doctor_role:
+        # Query users with the "doctor" role
+        form.recipient.choices = [(user.id, user.username) for user in User.query.join(roles).join(Role).filter(Role.id == doctor_role.id).all()]
+    else:
+        form.recipient.choices = []
+
+    if form.validate_on_submit():
+        sender = current_user
+        recipient_id = form.recipient.data
+        recipient = User.query.get(recipient_id)
+        phone_number = form.phone_number.data
+
+        phone_entry = PhoneNumber(
+            sender_id=sender.id,
+            recipient_id=recipient.id,
+            phone_number=phone_number
+        )
+        db.session.add(phone_entry)
+        db.session.commit()
+
+        flash(f'Phone number sent to {recipient.username}!', 'success')
+        return redirect(url_for('chat.send_phone_number'))
+
+    return render_template('send_phone_number.html', form=form)
+@chat_blueprint.route('/received_phone_numbers')
+@login_required
+def received_phone_numbers():
+    user = current_user
+    phone_numbers = PhoneNumber.query.filter_by(recipient_id=user.id).all()
+
+    return render_template('received_phone_numbers.html', phone_numbers=phone_numbers)

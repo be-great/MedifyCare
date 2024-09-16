@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Received Phone Numbers</title>
+</head>
+<body>
+    <h1>Your Received Phone Numbers</h1>
+
+    {% if phone_numbers %}
+        <ul>
+            {% for phone_number in phone_numbers %}
+                <li>{{ phone_number.phone_number }} (from {{ phone_number.sender.username }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no received phone numbers.</p>
+    {% endif %}
+
+    <a href="{{ url_for('main.index') }}">Go Back</a>
+</body>
+</html>

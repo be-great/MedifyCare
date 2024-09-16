@@ -17,6 +17,8 @@ app.app_context().push()
 
 
 fake_users = [
+    {'username': 'testuser', 'role': 'patient'},
+    {'username': 'testdoctor', 'role': 'doctor', 'specialty': 'pediatrics', 'bio': '10 years expertise in child development and preventive care.focusing on early diagnosis and management of common pediatric conditions.'},
     {'username': 'Esra', 'role': 'patient'},
     {'username': 'Dr.James Smith', 'role': 'doctor', 'specialty': 'cardiology', 'bio': '15 years of experience in diagnosing and treating heart conditions.'},
     {'username': 'Dr.Susan Martin', 'role': 'doctor', 'specialty': 'neurology', 'bio': '5 years of experiance in neurologist with a focus on neurodegenerative diseases and stroke management.'},

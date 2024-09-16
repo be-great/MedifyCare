@@ -1,7 +1,10 @@
 import unittest
 from io import BytesIO
+from unittest.mock import patch
 from app import create_app, db
 from flask import url_for
+from flask_login import current_user
+from app.models import User
 
 class TestImageUpload(unittest.TestCase):
 
@@ -14,6 +17,10 @@ class TestImageUpload(unittest.TestCase):
         db.create_all()  # Create test database
 
         # Add a test user here if you have authentication
+        test_user = User(username='testuser')
+        test_user.set_password('testpassword')
+        db.session.add(test_user)
+        db.session.commit()
 
     def tearDown(self):
         """Clean up after each test"""

@@ -45,7 +45,7 @@
                 <h2>Request a Video Call</h2>
                 <form method="POST" enctype="multipart/form-data" id="videoCallForm">
                     <label for="videoCallID">Enter your WhatsApp Number or Video Call ID:</label>
-                    <input type="text" id="videoCallID" name="videoCallID" value="{{ form.phone_number.data }}" required>
+                    <input type="text" id="videoCallID" name="videoCallID" required>
                     <input type="hidden" id="doctorId" name="doctorId" value="{{ doctor.id }}" required>
                     <button type="submit" class="btn btn-success">Submit Request</button>
                 </form>

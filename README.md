@@ -57,3 +57,8 @@ video_feature feild => active + there is whatsapp number
 doctor open it 
 
 #flash problem => payment model
+# Run test:-
+```bash
+python3 -m unittest test_video_call.py
+```
+find . -type d -name '__pycache__' -exec rm -r {} +
